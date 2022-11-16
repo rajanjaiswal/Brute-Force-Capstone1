@@ -2,6 +2,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtPrintSupport import *
+from PyQt5.QtWidgets import QApplication, QInputDialog, QLineEdit, QFileDialog
+from PyQt5.QtGui import QIcon
 
 import os
 import sys
@@ -129,6 +131,7 @@ class MainWindow(QMainWindow):
         undo_action = QAction(QIcon(os.path.join('images', 'arrow-curve-180-left.png')), "Undo", self)
         undo_action.setStatusTip("Undo last change")
         undo_action.triggered.connect(self.editor.undo)
+        edit_toolbar.addAction(undo_action)
         edit_menu.addAction(undo_action)
 
         redo_action = QAction(QIcon(os.path.join('images', 'arrow-curve.png')), "Redo", self)
@@ -254,7 +257,12 @@ class MainWindow(QMainWindow):
         format_group.addAction(self.alignr_action)
         format_group.addAction(self.alignj_action)
 
-        format_menu.addSeparator()
+        ########### create notebook, section, pages ##############
+        notebook_toolbar = QToolBar("Notebook")
+        notebook_toolbar.setIconSize(QSize(14, 14))
+        self.addToolBar(notebook_toolbar)
+        file_menu = self.menuBar().addMenu("&Notebook")
+
 
         # A list of all format-related widgets/actions, so we can disable/enable signals when updating.
         self._format_actions = [
@@ -306,21 +314,13 @@ class MainWindow(QMainWindow):
         dlg.show()
 
     def file_open(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Open file", "", "HTML documents (*.html);Text documents (*.txt);All files (*.*)")
-
-        try:
-            with open(path, 'rU') as f:
-                text = f.read()
-
-        except Exception as e:
-            self.dialog_critical(str(e))
-
-        else:
-            self.path = path
-            # Qt will automatically try and guess the format as txt/html
-            self.editor.setText(text)
-            self.update_title()
-
+        
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All Files (*);;Python Files (*.py)", options=options)
+        if fileName:
+            print(fileName)
+        
     def file_save(self):
         if self.path is None:
             # If we do not have a path, we need to use Save As.
@@ -361,7 +361,7 @@ class MainWindow(QMainWindow):
             self.editor.print_(dlg.printer())
 
     def update_title(self):
-        self.setWindowTitle("%s - Megasolid Idiom" % (os.path.basename(self.path) if self.path else "Untitled"))
+        self.setWindowTitle("%s - Notetaking App" % (os.path.basename(self.path) if self.path else "Untitled"))
 
     def edit_toggle_wrap(self):
         self.editor.setLineWrapMode( 1 if self.editor.lineWrapMode() == 0 else 0 )
@@ -370,7 +370,7 @@ class MainWindow(QMainWindow):
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
-    app.setApplicationName("Megasolid Idiom")
+    app.setApplicationName("Notetaking App")
 
     window = MainWindow()
     app.exec_()
