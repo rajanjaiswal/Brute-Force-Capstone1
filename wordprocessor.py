@@ -65,6 +65,12 @@ class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
+        self.setWindowTitle("OneNote")
+        self.setFixedHeight(800)
+        self.setFixedWidth(1200)
+
+
+
         layout = QVBoxLayout()
         self.editor = TextEdit()
         # Setup the QTextEdit editor configuration
@@ -361,7 +367,7 @@ class MainWindow(QMainWindow):
             self.editor.print_(dlg.printer())
 
     def update_title(self):
-        self.setWindowTitle("%s - Megasolid Idiom" % (os.path.basename(self.path) if self.path else "Untitled"))
+        self.setWindowTitle("%s - OneNote" % (os.path.basename(self.path) if self.path else "Untitled"))
 
     def edit_toggle_wrap(self):
         self.editor.setLineWrapMode( 1 if self.editor.lineWrapMode() == 0 else 0 )
