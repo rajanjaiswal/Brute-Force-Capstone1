@@ -261,7 +261,19 @@ class MainWindow(QMainWindow):
         notebook_toolbar = QToolBar("Notebook")
         notebook_toolbar.setIconSize(QSize(14, 14))
         self.addToolBar(notebook_toolbar)
-        file_menu = self.menuBar().addMenu("&Notebook")
+        notebook_menu = self.menuBar().addMenu("&Notebook")
+
+        new_notebook = QAction(QIcon(os.path.join('images', 'blue-folder-open-document.png')), "New Notebook", self)
+        new_notebook.setStatusTip("Create a new notebook")  #using older images till we find new ones
+        new_notebook.setCheckable(True)
+        #the triggering event to actually make new notebook should go here
+        notebook_menu.addAction(new_notebook)
+
+        delete_notebook = QAction(QIcon(os.path.join('images', 'blue-folder-open-document.png')), "Remove Notebook", self)
+        delete_notebook.setStatusTip("Removing current notebook")
+        delete_notebook.setCheckable(True)
+        #the triggering event should go here
+        notebook_menu.addAction(delete_notebook)
 
 
         # A list of all format-related widgets/actions, so we can disable/enable signals when updating.
