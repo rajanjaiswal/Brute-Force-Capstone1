@@ -90,6 +90,7 @@ class MainWindow(QMainWindow):
 
         container = QWidget()
         container.setLayout(layout)
+        container.setStyleSheet("background-color: whitesmoke")
         self.setCentralWidget(container)
 
         self.status = QStatusBar()
@@ -100,6 +101,7 @@ class MainWindow(QMainWindow):
 
         file_toolbar = QToolBar("File")
         file_toolbar.setIconSize(QSize(14, 14))
+        file_toolbar.setStyleSheet("background-color: lightgrey")
         self.addToolBar(file_toolbar)
         file_menu = self.menuBar().addMenu("&File")
 
@@ -126,9 +128,11 @@ class MainWindow(QMainWindow):
         print_action.triggered.connect(self.file_print)
         file_menu.addAction(print_action)
         file_toolbar.addAction(print_action)
+        file_menu.setStyleSheet("color: darkslategray;" "background-color: lightgrey;" "selection-color: white;" "selection-background-color: lightgreen;")
 
         edit_toolbar = QToolBar("Edit")
         edit_toolbar.setIconSize(QSize(16, 16))
+        edit_toolbar.setStyleSheet("background-color: lightgrey")
         self.addToolBar(edit_toolbar)
         edit_menu = self.menuBar().addMenu("&Edit")
 
@@ -180,9 +184,11 @@ class MainWindow(QMainWindow):
         wrap_action.setChecked(True)
         wrap_action.triggered.connect(self.edit_toggle_wrap)
         edit_menu.addAction(wrap_action)
+        edit_menu.setStyleSheet("color: darkslategray;" "background-color: lightgrey;" "selection-color: white;" "selection-background-color: lightgreen;")
 
         format_toolbar = QToolBar("Format")
         format_toolbar.setIconSize(QSize(16, 16))
+        format_toolbar.setStyleSheet("color: darkslategray;" "background-color: lightgrey;" "selection-color: white;" "selection-background-color: lightgreen;")
         self.addToolBar(format_toolbar)
         format_menu = self.menuBar().addMenu("&Format")
 
@@ -190,6 +196,8 @@ class MainWindow(QMainWindow):
         self.fonts = QFontComboBox()
         self.fonts.currentFontChanged.connect(self.editor.setCurrentFont)
         format_toolbar.addWidget(self.fonts)
+
+        format_menu.setStyleSheet("color: darkslategray;" "background-color: lightgrey;" "selection-color: white;" "selection-background-color: lightgreen;")
 
         self.fontsize = QComboBox()
         self.fontsize.addItems([str(s) for s in FONT_SIZES])
@@ -260,7 +268,24 @@ class MainWindow(QMainWindow):
         format_group.addAction(self.alignr_action)
         format_group.addAction(self.alignj_action)
 
-        format_menu.addSeparator()
+        ########### create notebook, section, pages ##############
+        notebook_toolbar = QToolBar("Notebook")
+        notebook_toolbar.setIconSize(QSize(14, 14))
+        self.addToolBar(notebook_toolbar)
+        notebook_menu = self.menuBar().addMenu("&Notebook")
+        notebook_menu.setStyleSheet("color: darkslategray;" "background-color: lightgrey;" "selection-color: white;" "selection-background-color: lightgreen;")
+
+        new_notebook = QAction(QIcon(os.path.join('images', 'blue-folder-open-document.png')), "New Notebook", self)
+        new_notebook.setStatusTip("Create a new notebook")
+        new_notebook.setCheckable(True)
+        #the triggering event should go here
+        notebook_menu.addAction(new_notebook)
+
+        delete_notebook = QAction(QIcon(os.path.join('images', 'blue-folder-open-document.png')), "Remove Notebook", self)
+        delete_notebook.setStatusTip("Removing current notebook")
+        delete_notebook.setCheckable(True)
+        #the triggering event should go here
+        notebook_menu.addAction(delete_notebook)
 
         # A list of all format-related widgets/actions, so we can disable/enable signals when updating.
         self._format_actions = [
