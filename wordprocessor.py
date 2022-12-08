@@ -274,6 +274,34 @@ class MainWindow(QMainWindow):
         self.addToolBar(notebook_toolbar)
         notebook_menu = self.menuBar().addMenu("&Notebook")
         notebook_menu.setStyleSheet("color: darkslategray;" "background-color: lightgrey;" "selection-color: white;" "selection-background-color: lightgreen;")
+        
+        self.setStyleSheet("""
+        QMenuBar {
+            background-color: rgb(53, 165, 27);
+            color: rgb(255, 255, 255);
+			border: 10px solid rgb(53, 165, 27);
+			font: 14pt "MS Shell Dlg 2";
+        }
+
+        QMenuBar::item {
+            background-color: rgb(53, 165, 27);
+            color: rgb(255,255,255);
+        }
+
+        QMenuBar::item::selected {
+            background-color: rgb(74, 226, 36);
+        }
+
+        QMenu {
+           background-color: rgb(53, 165, 27);
+            color: rgb(255, 255, 255);
+			border: 12px solid rgb(53, 165, 27);         
+        }
+
+        QMenu::item::selected {
+            background-color: rgb(30,30,30);
+        }
+    """)
 
         new_notebook = QAction(QIcon(os.path.join('images', 'blue-folder-open-document.png')), "New Notebook", self)
         new_notebook.setStatusTip("Create a new notebook")
